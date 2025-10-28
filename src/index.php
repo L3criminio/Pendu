@@ -89,7 +89,7 @@ $lose = $_SESSION['erreurs'] >= 6;
                     style="transition: all 0.3s ease; transform: translateY(0);"
                     onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 15px 30px rgba(0,0,0,0.3)';"
                     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='';">
-                ✅ Essayer
+                 Essayer
             </button>
         </form>
         <?php if ($win || $lose): ?>
