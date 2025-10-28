@@ -56,29 +56,51 @@ $lose = $_SESSION['erreurs'] >= 6;
     <title>Pendu</title>
 </head>
 
-<body class="bg-gray-800 flex justify-center items-center" data-erreurs="<?php echo $_SESSION['erreurs']; ?>">
-    <div class="w-175 h-200 bg-white rounded-2xl flex justify-center items-center flex-col mt-6 gap-7 shadow-md shadow-white">
-        <h1 class="text-4xl text-center font-semibold text-gray-800 text-shadow-gray-800/50 text-shadow-md block mb-5">Jeu du pendu</h1>
-        <p class="text-gray-800 font-semibold">Lettres utilisées : 
-            <?php 
-            if (!empty($_SESSION['lettres_utilisees'])) {
-                echo implode(', ', $_SESSION['lettres_utilisees']); 
-            } else {
-                echo "Aucune";
-            }
-            ?>
-        </p>
-        <div id="mot-affiche" class="font-semibold text-xl">
+<body class="bg-gray-800 flex justify-center items-center min-h-screen" data-erreurs="<?php echo $_SESSION['erreurs']; ?>">
+    <div class="w-175 bg-white rounded-2xl flex justify-center items-center flex-col mt-6 mb-10 gap-7 shadow-xl shadow-gray-800 p-8">
+        <h1 class="text-5xl text-center font-bold text-gray-800 mb-2" style="letter-spacing: 2px; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);"> JEU DU PENDU </h1>
+        <div class="w-full h-1 bg-linear-to-r from-transparent via-gray-800 to-transparent rounded-full mb-3"></div>
+        <div class="w-full bg-gray-100 rounded-2xl p-5 border-2 border-gray-300">
+            <p class="text-gray-800 font-semibold text-center mb-3">
+                <span class="text-lg"> Lettres utilisées :</span>
+            </p>
+            <div class="flex flex-wrap justify-center gap-2 min-h-10">
+                <?php
+                if (!empty($_SESSION['lettres_utilisees'])) {
+                    foreach ($_SESSION['lettres_utilisees'] as $lettre) {
+                        echo '<span class="inline-block bg-gray-800 text-white px-3 py-1 rounded-lg font-semibold text-sm shadow-md">' . $lettre . '</span>';
+                    }
+                } else {
+                    echo '<span class="text-gray-400 italic">Aucune</span>';
+                }
+                ?>
+            </div>
+        </div>
+
+        <div id="mot-affiche" class="font-bold text-4xl tracking-wider bg-gray-800 text-white px-8 py-5 rounded-2xl shadow-lg" style="letter-spacing: 8px;">
             <?php echo implode(' ', $_SESSION['lettres_trouvees']); ?>
         </div>
 
-        <form id="form-lettre" method="POST" action="" <?php if ($win || $lose) echo 'style="display:none;"'; ?>>
-            <input type="text" id="input-lettre" name="lettre" maxlength="1" placeholder="Entrez une lettre ici..." class="w-40 h-5 ps-2 p-3 border-2 rounded border-gray-800"><br>
-            <button type="submit" class="w-20 h-7 bg-gray-800 rounded text-white font-semibold block mt-1.5 m-auto">Essayer</button>
+        <form id="form-lettre" method="POST" action="" <?php if ($win || $lose) echo 'style="display:none;"'; ?> class="w-full flex flex-col items-center gap-4">
+            <input type="text" id="input-lettre" name="lettre" maxlength="1" placeholder="Entrez une lettre..."
+                   class="w-100 text-center text-2xl font-bold ps-2 p-4 border-4 rounded-2xl border-gray-800 focus:border-blue-600 focus:outline-none shadow-md uppercase"
+                   style="transition: all 0.3s ease; text-transform: uppercase;">
+            <button type="submit" class="w-50 bg-gray-800 hover:bg-gray-700 text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-lg"
+                    style="transition: all 0.3s ease; transform: translateY(0);"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 15px 30px rgba(0,0,0,0.3)';"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='';">
+                ✅ Essayer
+            </button>
         </form>
         <?php if ($win || $lose): ?>
             <form method="POST" action="" class="mt-4">
-                <button type="submit" name="nouvelle_partie" class="bg-gray-800 hover:cursor-pointer text-white px-6 py-3 rounded font-semibold">Nouvelle Partie</button>
+                <button type="submit" name="nouvelle_partie"
+                        class="bg-gray-800 hover:bg-gray-700 text-white px-10 py-4 rounded-2xl font-bold text-lg shadow-xl"
+                        style="transition: all 0.3s ease; transform: translateY(0);"
+                        onmouseover="this.style.transform='translateY(-3px) scale(1.05)'; this.style.boxShadow='0 20px 40px rgba(0,0,0,0.4)';"
+                        onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='';">
+                     Nouvelle Partie
+                </button>
             </form>
         <?php endif; ?>
         <?php if ($win): ?>
@@ -92,23 +114,23 @@ $lose = $_SESSION['erreurs'] >= 6;
                 <p class="font-semibold text-center">Le mot était : <?php echo $_SESSION['mot_secret']; ?></p>
             </div>
         <?php endif; ?>
-        <div class="w-inherit h-inherit p-7 px-12 bg-gray-800 rounded-2xl shadow-lg shadow-gray-800">
-                <svg id="pendu" width="250" height="250">
+        <div class="w-inherit h-inherit p-8 px-12 bg-gray-800 rounded-2xl shadow-2xl border-4 border-gray-700" style="box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.1);">
+                <svg id="pendu" width="250" height="250" style="filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));">
                     <!--Potence du pendu -->
-                    <line  y1="230" x2="250" y2="230" stroke="white" stroke-width="4"/>
-                    <line x1="175" y1="20" x2="175" y2="230" stroke="white" stroke-width="4"/>
-                    <line x1="75" y1="20" x2="230" y2="20" stroke="white" stroke-width="4"/>
-                    <line x1="75" y1="18" x2="75" y2="50" stroke="white" stroke-width="4"/>
-                    <line x1="175" y1="50" x2="150" y2="20" stroke="white" stroke-width="4"/>
-                    <line x1="175" y1="70" x2="220" y2="20" stroke="white" stroke-width="4"/>
-                    
+                    <line y1="230" x2="250" y2="230" stroke="#f0f0f0" stroke-width="5"/>
+                    <line x1="175" y1="20" x2="175" y2="230" stroke="#f0f0f0" stroke-width="5"/>
+                    <line x1="75" y1="20" x2="230" y2="20" stroke="#f0f0f0" stroke-width="5"/>
+                    <line x1="75" y1="18" x2="75" y2="50" stroke="#f0f0f0" stroke-width="5"/>
+                    <line x1="175" y1="50" x2="150" y2="20" stroke="#f0f0f0" stroke-width="4"/>
+                    <line x1="175" y1="70" x2="220" y2="20" stroke="#f0f0f0" stroke-width="4"/>
+
                     <!--Corps du pendu -->
-                    <circle id="tete" cx="75" cy="70" r="20" stroke="white" stroke-width="3" fill="none" style="display:none;"/>
-                    <line id="corps" x1="75" y1="90" x2="75" y2="150" stroke="white" stroke-width="3" style="display:none;"/>
-                    <line id="bras-gauche" x1="75" y1="110" x2="45" y2="130" stroke="white" stroke-width="3" style="display:none;"/>
-                    <line id="bras-droit" x1="75" y1="110" x2="105" y2="130" stroke="white" stroke-width="3" style="display:none;"/>
-                    <line id="jambe-gauche" x1="75" y1="150" x2="55" y2="190" stroke="white" stroke-width="3" style="display:none;"/>
-                    <line id="jambe-droite" x1="75" y1="150" x2="95" y2="190" stroke="white" stroke-width="3" style="display:none;"/>
+                    <circle id="tete" cx="75" cy="70" r="20" stroke="white" stroke-width="4" fill="none"/>
+                    <line id="corps" x1="75" y1="90" x2="75" y2="150" stroke="white" stroke-width="4" style="display:none;"/>
+                    <line id="bras-gauche" x1="75" y1="110" x2="45" y2="130" stroke="white" stroke-width="4" style="display:none;"/>
+                    <line id="bras-droit" x1="75" y1="110" x2="105" y2="130" stroke="white" stroke-width="4" style="display:none;"/>
+                    <line id="jambe-gauche" x1="75" y1="150" x2="55" y2="190" stroke="white" stroke-width="4" style="display:none;"/>
+                    <line id="jambe-droite" x1="75" y1="150" x2="95" y2="190" stroke="white" stroke-width="4" style="display:none;"/>
                 </svg>
             </div>
     </div>
